@@ -1,22 +1,28 @@
 name: Auto commit
 
-on:
-
+on: 
   push:
-    branches:
+    branches: 
       - master
+      - main  # Add main branch as well
       
   schedule:
-  - cron: "1 * * * *" # See https://crontab.guru/#0_7,9,11_*_*_1,3
+    - cron: "1 * * * *"  # Runs at minute 1 of every hour
+  
+  workflow_dispatch:  # Allows manual triggering for testing
+
+permissions:
+  contents: write  # Explicit write permission
 
 jobs:
-  auto_commit:
+  auto_commit: 
     runs-on: ubuntu-latest
     steps:
       - name: DEBUG 
-        run: echo "::debug::Ref = ${{github.ref}}"
-      - uses: actions/checkout@v3      
-        with:
+        run:  echo "::debug::Ref = ${{github.ref}}"
+        
+      - uses: actions/checkout@v4  # Updated to v4
+        with: 
          persist-credentials: false
          fetch-depth: 0
 
@@ -44,10 +50,11 @@ jobs:
           
           rand=$[$RANDOM % ${#arr[@]}]
           
-          git commit -m "${arr[$rand]}"
+          git diff --staged --quiet || git commit -m "${arr[$rand]}"
           
       - name: GitHub Push
-        uses: ad-m/github-push-action@v0.6.0
+        uses:  ad-m/github-push-action@master
         with:
-          directory: "."
+          directory:  "."
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
