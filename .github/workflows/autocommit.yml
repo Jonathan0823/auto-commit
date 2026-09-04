@@ -25,7 +25,7 @@ jobs:
       - name: DEBUG 
         run:  echo "::debug::Ref = ${{github.ref}}"
         
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
