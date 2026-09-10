@@ -7,7 +7,7 @@ on:
       - main  # Add main branch as well
       
   schedule:
-    - cron: "17 * * * *"  # Runs at minute 17 of every hour
+    - cron: "28  * * * *"  # Runs at 28 minutes past the hour
   
   workflow_dispatch:  # Allows manual triggering for testing
 
